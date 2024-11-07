@@ -1,0 +1,3 @@
+gridengine_framework==0.91.9,
+namemaker==1.2,
+Twisted==24.7.0,
