@@ -1,3 +1,5 @@
+import uuid
+
 class Component:
     """A base class for all components."""
     pass
@@ -7,6 +9,7 @@ class Entity:
     """An entity is an object that can have components attached to it."""
 
     def __init__(self):
+        self.id = uuid.uuid4()
         self.components = {}
 
     def add_component(self, component):
@@ -19,6 +22,9 @@ class Entity:
         """Returns the component of the given type if the entity has it, None
         otherwise."""
         return self.components.get(component_type)
+    
+    def __repr__(self) -> str:
+        return f"Entity({self.id})"
 
 class System:
     def update(self, entities):
@@ -70,6 +76,13 @@ class Health(Component):
         if self.health > 100:
             self.health = 100
 
+class Genetics:
+    def __init__(self, dna=None):
+        self.dna = dna or DNA()  # Generate new DNA if none provided
+
+    def __repr__(self):
+        return f"Genetics(dna={self.dna})"
+    
 # Example system
 class MovementSystem(System):
     def update(self, entities):
