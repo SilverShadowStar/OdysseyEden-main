@@ -1,9 +1,44 @@
 # personality.py
 
-import random
-from typing import Optional, Dict
-from ..utils.constants import AGES, PERSONALITY_CATAGORIES, TRAITS, TRAIT_SYNERGIES, TRAIT_EVOLUTIONS
+import logging
+from typing import Dict, Optional, List, Tuple
+from src.utils.constants import TRAIT_EVOLUTIONS,
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+
+class Trait:
+    def __init__(self, name: str, age_group: str, trait_group: str, synergy: Dict[str, str], passive_effect: Optional[str] = None) -> None:
+        self.name: str = name
+        self.age_group: str = age_group
+        self.trait_group: str = trait_group
+        self.synergy: Dict[str, str] = synergy
+        self.passive_effect: Optional[str] = passive_effect
+
+    def evolve(self, current_age_group: str) -> 'Trait':
+        """
+        Evolve the current trait based on the character's current age group.
+
+        Parameters:
+        - current_age_group (str): The age group the character is currently in.
+
+        Returns:
+        - Trait: A new Trait instance representing the evolved trait.
+        """
+        # Validate current_age_group
+        if current_age_group not in [age_group for age_group, _ in TRAIT_EVOLUTIONS]:
+            logging.warning(f"Invalid age group: {current_age_group}. No evolution will occur.")
+            return self  # No evolution if the age group is invalid
+
+        for evolution in TRAIT_EVOLUTIONS:
+            if self.name == evolution[0] and self.age_group == evolution[1]:
+                # Create a new Trait instance with the evolved name
+                new_trait = Trait(name=evolution[2], age_group=current_age_group, trait_group=self.trait_group, synergy=self.synergy, passive_effect=self.passive_effect)
+                logging.info(f"Evolved {self.name} to {new_trait.name}.")
+                return new_trait  # Return the new evolved trait
+
+        # If no evolution occurs, return the current instance
+        return self
 
 class Trait:
     def __init__(self, name: str, age_group: str, trait_group: str, synergy: Dict, passive_effect: Optional[str] = None):
@@ -23,22 +58,31 @@ class Trait:
         self.synergy: Dict = synergy
         self.passive_effect: Optional[str] = passive_effect
 
-    def evolve(self, current_age_group: str) -> None:
+    def evolve(self, current_age_group: str) -> 'Trait':
         """
         Evolve the current trait based on the character's current age group.
 
         Parameters:
         - current_age_group (str): The age group the character is currently in.
 
+        Returns:
+        -Trait: A new Trait instance representing the evolved trait.
+        
         This function checks the predefined evolutions (in TRAIT_EVOLUTIONS) for the trait and updates it if applicable.
         """
-        self.current_age_group = current_age_group
+        if current_age_group not in [age_group for age_group, in TRAIT_EVOLUTIONS]:
+            logging.warning(f"Invalid age group: {current_age_group}. No evolution will occur.")
+            return self
         for evolution in TRAIT_EVOLUTIONS:
             if self.name == evolution[0] and self.age_group == evolution[1]:
-                self.name = evolution[2]  # Evolve to the next trait
-                print(f"Evolved {self.name} to {evolution[2]}.")
-                break
-
+                # Create a new Trait instance with the evolved name
+                new_trait = Trait(name=evolution[2], age_group=self.age_group, trait_group=self.trait_group, synergy=self.synergy, passive_effect=self.passive_effect)
+                logging.INFO(f"Evolved {self.name} to {new_trait.name}")
+                return new_trait
+            
+        # If no evolution is found, return the original trait
+        return self
+    
     def synergy_effect(self, other_trait: 'Trait') -> Optional[str]:
         """
         Check if this trait synergizes with another trait.
@@ -49,13 +93,17 @@ class Trait:
         Returns:
         - str: A description of the synergy effect, if one exists.
         """
-        for synergy in TRAIT_SYNERGIES:
-            if (self.name, other_trait.name) in synergy[0]:
-                return synergy[1]  # Return the synergy effect description
-        return None
+        return next(
+            (
+                synergy[1]
+                for synergy in TRAIT_SYNERGIES
+                if (self.name, other_trait.name) in synergy[0]
+            ),
+            None,
+        )
 
 
-class Personalitiy:
+class Personality:
     def __init__(self, age_group, traits=None):
         """
         Initialize a Personality object.

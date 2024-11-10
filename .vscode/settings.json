@@ -1,4 +1,13 @@
 {
     "python.analysis.autoImportCompletions": true,
-    "python.analysis.typeCheckingMode": "standard"
+    "python.analysis.typeCheckingMode": "standard",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "ai-docstring.includeExtendedSummary": true,
+    "ai-docstring.includeName": true,
+    "ai-docstring.startOnNewLine": true,
+    "terminal.integrated.wordSeparators": " ()[]{}',\"`─‘’“”|",
+    "notebook.defaultFormatter": "Blackboxapp.blackbox",
+    "notebook.formatOnCellExecution": true,
+    "notebook.formatOnSave.enabled": true,
+    "python.pythonPath": ".venv\\Scripts\\python.exe"
 }
