@@ -11,37 +11,76 @@ from .traits import TRAIT_SYNERGIES
 from .traits import TRAIT_EVOLUTIONS
 from .traits import TRAIT_COMBOS
 from .traits import TRAIT_PASSIVE_EFFECTS
-from src.utils.constants import AGE_GROUPS GENE_TYPES
+from src.utils.constants import AGE_GROUPS, GENE_TYPES
 
 # Making the namesets
 female_names = namemaker.make_name_set("female_first_names.txt")
 male_names = namemaker.make_name_set("male_first_names.txt")
 last_names = namemaker.make_name_set("last_names.txt")
 
+class Inventory:
+    def __init__(self):
+        self.items = []  # List of items the character possesses
+
+class Quests:
+    def __init__(self):
+        self.active_quests = []  # List of active quests
+
+class Sprites:
+    def __init__(self):
+        self.sprite_image = None  # Placeholder for sprite image
 
 class Character:
-    def __init__(self, age_group: str, mother: Optional['Character'] = None, father: Optional['Character'] = None, genes: Optional[dict] = None, fname: Optional[str] = None):
-        self.id = uuid.uuid4()
-        self.age_group = age_group
-        self.mother = mother
-        self.father = father
-        self.genes = genes if genes is not None else self.generate_genes(mother, father)
+    def __init__(self, age: str, mother: Optional['Character'] = None, father: Optional['Character'] = None, fname: Optional[str] = None, lname: Optional[str] = None):
+        self.components = {}  # Initialize the components dictionary
+        self.systems = {}      # Initialize the systems dictionary
 
-        # Assign first name based on the second gene
-        if fname is not None:
-            self.fname = fname
-        else:
-            # Check the second gene to determine the name
-            second_gene = self.genes['sex'][1]  # Get the second gene from the sex gene list
-            self.fname = female_names.make_name() if second_gene == 'X' else male_names.make_name()
+        # Add components to the dictionary
+        self.components['id'] = str(uuid.uuid4())  # Unique identifier for the character
+        self.components['age_group'] = AgeGroup(age)  # Age group component
+        self.components['relationships'] = Relationships()  # Manages relationships with other characters
+        self.components['family'] = Family(mother=mother, father=father)  # Family relationships
+        self.components['genes'] = Genes(mother, father)  # Genetic traits based on parents
+        self.components['names'] = Names(fname=fname, lname=lname, father=father)  # Name management
+        self.components['personality'] = Personality(self.components['age_group'].group)  # Personality traits
+        self.components['dynamic'] = DynamicTraitSystem()  # System for dynamic traits
+        self.components['looks'] = Looks()  # Physical appearance attributes
+        self.components['health'] = Health()  # Health status management
+        self.components['needs'] = Needs()  # Basic needs (hunger, thirst, etc.)
+        self.components['stats'] = Stats()  # Core statistics (stamina, strength, etc.)
+        self.components['skills'] = Skills()  # Skills that the character can learn and improve
+        self.components['jobs'] = Jobs()  # Job or career-related attributes
+        self.components['actions'] = Actions()  # Possible actions the character can take
+        self.components['inventory'] = Inventory()  # Items and resources the character possesses
+        self.components['quests'] = Quests()  # Active quests and progress tracking
+        self.components['sprites'] = Sprites()  # Visual representation (sprites) of the character
+        self.components['action_queue'] = ActionQueue()  # Queue for actions to be performed
 
-        self.lname = self.father.lname if self.father is not None else last_names.make_name()
-        self.name = f"{self.fname} {self.lname}"
-        self.components = {}
-        self.personality = Personality(age_group)
-        self.traits = self.personality.generate()
-        self.dynamic_trait_system = DynamicTraitSystem()
-    
+    def get_component(self, component_name):
+        """Retrieve a component by name."""
+        return self.components.get(component_name)
+
+    def get_system(self, system_name):
+        """Retrieve a system by name."""
+        return self.systems.get(system_name)
+
+    def generate_name(self):
+        """Generate a name for the character if not provided."""
+        if not self.components['names'].fname:
+            second_gene = self.components['genes'].sex[1]  # Get the second gene from the sex gene list
+            self.components['names'].fname = female_names.make_name() if second_gene == 'X' else male_names.make_name()
+        
+        if not self.components['names'].lname:
+            if not self.components['family'].father:
+                self.components['names'].lname = last_names.make_name()  # Generate last name if not provided
+
+    # Additional methods can be implemented here for character actions, updates, and interactions
+    def update_age(self, years):
+        """Update the character's age and related components."""
+        self.components['age_group'].update_age(years)
+        self.components['personality'].age_group = self.components['age_group'].group
+        # Handle other logic related to age change
+
     def generate_genes(self, mother: Optional['Character'], father: Optional['Character']) -> dict:
         """Generate genes based on the parents' genes or randomly if no parents are provided."""
         genes = {}
@@ -66,15 +105,6 @@ class Character:
                 genes[trait] = [gene1, gene2]  # Each trait gets 2 genes
 
         return genes  # This will return a dictionary with traits as keys and lists of genes as values
-
-    def add_component(self, component):
-        """Add a component to the character."""
-        self.components[type(component)] = component
-        return self
-
-    def get_component(self, component_type):
-        """Safely retrieve a component."""
-        return self.components.get(component_type)
 
     def add_trait(self, trait):
         """Add a trait to the character."""

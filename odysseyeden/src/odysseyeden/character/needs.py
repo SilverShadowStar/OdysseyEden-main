@@ -1,6 +1,5 @@
 # Character Needs
-class Needs:
-	#Max Need Value
+class Needs:#Max Need Value
 	MAX_HUNGER = 100
 	MAX_THIRST = 100
 	MAX_ENERGY = 100
@@ -30,3 +29,13 @@ class Needs:
 	COMFORT_DECAY = 1  # 1 point every in-game hour
 	SAFETY_DECAY = 0.2  # 0.2 points every in-game hour
 	HEALTH_DECAY = 0.1  # 0.1 points every in-game hour
+    def __init__(self, name, min, max, decay):
+		self.name = name
+		self.min = min
+		self.max = max
+		self.decay = decay
+		self.value = max
+
+	def upate(self):
+		self.value = max(self.min, self.value - self.decay)
+		return self.value

@@ -10,10 +10,13 @@ mental=['meditation', 'philosophy', 'spiritual leadership'],
 exploration=['navigation', 'cartography', 'swimming', 'climbing'],
 domestic=['cleaning', 'child rearing', 'clothing maintenance'],
 magic=['elemental', 'divination', 'alchemy', 'enchanting']
-
 class Skills:
-    def __init__(self, skills):
-        self.skills = skills
+    def __init__(self):
+        self.learned_skills = []  # List of skills the character has learned
+        self.unlearned_skills = []  # List of skills the character has not learned
+        self.skill_levels = {}  # Dictionary of skill levels
+        self.skill_exp = {}  # Dictionary of skill experience
+        self.skill_groups = {}  # Dictionary of skill groups
     
     def improve_related_stats(self, skill, levels_gained, stats_component):
         """Improve stats related to a skill."""
