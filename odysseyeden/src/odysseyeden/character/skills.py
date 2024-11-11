@@ -1,29 +1,15 @@
+#src/character/skills.py 
 
-"""perception
-instinct
-literacy
-knowledge
-creativity
-mediation
-cunning
-persuasion
-cooking
-mechanical
-technology
-combat
-endurance
-stealth
-survial
-luck
-communication
-organization
-animal
-pacifying
-
-agile
-clumsy
-naive
-savvy"""
+survival=['foraging', 'hunting', 'fishing', 'cooking', 'fire-making', 'shelter-building', 'farming', 'tool crafting', 'animal husbandry'],
+combat=['melee', 'archery', 'defense', 'tactics', 'martial arts'],
+crafting=['woodworking', 'stoneworking', 'metalworking', 'textile crafting', 'pottery', 'building', 'leatherworking'],
+artisan= ['painting', 'writing', 'sculpting', 'music'],
+communication=['bartering', 'leadership', 'teaching', 'diplomacy', 'persuasion'],
+healing=['herbalisim', 'first aid', 'surgery', 'midwifery', 'spiritual healing'],
+mental=['meditation', 'philosophy', 'spiritual leadership'],
+exploration=['navigation', 'cartography', 'swimming', 'climbing'],
+domestic=['cleaning', 'child rearing', 'clothing maintenance'],
+magic=['elemental', 'divination', 'alchemy', 'enchanting']
 
 class Skills:
     def __init__(self, skills):

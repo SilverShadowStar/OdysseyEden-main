@@ -11,6 +11,7 @@
     "notebook.formatOnSave.enabled": true,
     "python.pythonPath": ".venv\\Scripts\\python.exe",
     "cSpell.words": [
+        "namemaker",
         "odysseyeden"
     ]
 }

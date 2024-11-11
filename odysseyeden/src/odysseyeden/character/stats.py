@@ -1,3 +1,4 @@
+
 class Stats:
     def __init__(self, base_stats):
         self.base_stats = base_stats

@@ -21,7 +21,7 @@ last_names = namemaker.make_name_set("last_names.txt")
 
 class Character:
     def __init__(self, age_group: str, mother: Optional['Character'] = None, father: Optional['Character'] = None, genes: Optional[dict] = None, fname: Optional[str] = None):
-        self.id = uuid .uuid4()
+        self.id = uuid.uuid4()
         self.age_group = age_group
         self.mother = mother
         self.father = father
