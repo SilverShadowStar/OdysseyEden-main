@@ -55,6 +55,44 @@ AGES = {
     'mature': (30, 59),
     'sage': (60, 120)
 }
+
+# Genes
+SEX: List[str] = ['X', 'Y']
+GENDER: List[str] = ['masc', 'fem', 'androgynous']
+TONE: List[str] = ['pale', 'medium', 'tan', 'dark', 'deep']
+UNDERTONE: List[str] = ['warm', 'neutral', 'cool']
+HEIGHT: List[str] = ['short', 'average', 'tall']
+BSHAPE: List[str] = ['slim', 'average', 'athletic', 'curvy']
+BSIZE: List[str] = ['small', 'medium', 'large']
+HCOLOR: List[str] = ['black', 'brown', 'blonde', 'ginger']
+HTEXT: List[str] = ['straight', 'wavy', 'curly']
+ESHAPE: List[str] = ['round', 'almond', 'upturned', 'downturned', 'hooded']
+ECOLOR: List[str] = ['brown', 'hazel', 'green', 'blue', 'grey']
+NPROFILE: List[str] = ['small', 'medium', 'tall']
+NSHAPE: List[str] = ['refined', 'hero', 'soft', 'perky', 'dainty', 'strong', 'bulb']
+MSHAPE: List[str] = ['thin', 'round', 'wide', 'fuller lower', 'fuller upper', 'downturned', 'bowshaped', 'full', 'heartshaped']
+RSHAPE: List[str] = ['round', 'pointed']
+RSIZE: List[str] = ['small', 'medium', 'large']
+
+GENE_TYPES: Dict[str, List[str]] = {
+    'sex': SEX,
+    'gender': GENDER,
+    'tone': TONE,
+    'undertone': UNDERTONE,
+    'height': HEIGHT,
+    'bshape': BSHAPE,
+    'bsize': BSIZE,
+    'hcolor': HCOLOR,
+    'htext': HTEXT,
+    'eshape': ESHAPE,
+    'ecolor': ECOLOR,
+    'nprofile': NPROFILE,
+    'nshape': NSHAPE,
+    'mshape': MSHAPE,
+    'rshape': RSHAPE,
+    'rsize': RSIZE
+}
+
 TRAITS = ['easy-going',
             'adaptable',
             'content',

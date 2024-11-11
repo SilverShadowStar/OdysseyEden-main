@@ -9,5 +9,8 @@
     "notebook.defaultFormatter": "Blackboxapp.blackbox",
     "notebook.formatOnCellExecution": true,
     "notebook.formatOnSave.enabled": true,
-    "python.pythonPath": ".venv\\Scripts\\python.exe"
+    "python.pythonPath": ".venv\\Scripts\\python.exe",
+    "cSpell.words": [
+        "odysseyeden"
+    ]
 }
